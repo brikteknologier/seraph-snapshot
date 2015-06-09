@@ -67,5 +67,12 @@ function JSONtoCypher(data) {
 };
 
 module.exports = {
-
+  json: dbToJSON,
+  jsonToCypher: JSONtoCypher,
+  cypher: function(db, cb) {
+    dbToJSON(db, function(err, data) {
+      if (err) return cb(err);
+      else cb(null, JSONtoCypher(data));
+    });
+  }
 }
