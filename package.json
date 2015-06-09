@@ -1,0 +1,25 @@
+{
+  "name": "seraph-snapshot",
+  "version": "1.0.0",
+  "description": "Take a snapshot of a neo4j database",
+  "main": "seraph-snapshot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:brikteknologier/seraph-snapshot.git"
+  },
+  "keywords": [
+    "seraph",
+    "snapshot",
+    "backup",
+    "neo4j"
+  ],
+  "author": "Jon Packer <jon.packer@brik.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brikteknologier/seraph-snapshot/issues"
+  },
+  "homepage": "https://github.com/brikteknologier/seraph-snapshot"
+}
