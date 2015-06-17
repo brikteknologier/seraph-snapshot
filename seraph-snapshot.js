@@ -97,11 +97,15 @@ function restoreTransactional(db, data) {
     }, []).join(',');
     var query = start ? 'START ' + start : '';
     query += 'CREATE ' + s.map(function(row) { return row.statement }).join(',');
+    query += 'RETURN ' + s.map(function(row) { return 'id(' + row.id + ') as ' + row.id }).join(',');
     var endpoint = txn || 'transaction';
     var op = db.operation(endpoint, 'POST', {
       statements: [{ statement:query, resultDataContents: ['graph']}]
     });
-    db.call(function(err, result) {
+    db.call(op, function(err, result) {
+      if (err) return cb(err);
+      // see how enterprise.
+      result = result.result[0].data[0].graph.nodes;
     });
   });
 }
