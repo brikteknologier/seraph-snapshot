@@ -77,7 +77,7 @@ function JSONtoStatementList(data) {
   return creates;
 };
 
-function restoreTransactional(db, data) {
+function restoreTransactional(db, data, cb) {
   var statements = JSONtoStatementList(data);
   var stepSize = 15;
   var nodeMap = {};
