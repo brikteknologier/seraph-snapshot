@@ -1,5 +1,6 @@
 var seraph = require('seraph');
 var async = require('async');
+var _ = require('underscore');
 
 var fetchdb = [
   'MATCH node',
@@ -89,15 +90,13 @@ function restoreTransactional(db, data, cb) {
   }
 
   async.forEachSeries(groups, function(s,cb) {
-    var start = s.reduce(function(start, row) {
-      if (row.refs.length == 0) return start;
-      else return start.concat(row.refs.map(function(ref) {
+    var start = _.chain(s).pluck('refs').flatten().uniq().map(function(ref) {
         return ref + '=node(' + nodeMap[ref] + ')';
-      }));
-    }, []).join(',');
+    }).value().join(',')
     var query = start ? 'START ' + start : '';
-    query += 'CREATE ' + s.map(function(row) { return row.statement }).join(',');
-    query += 'RETURN ' + s.map(function(row) { return 'id(' + row.id + ') as ' + row.id }).join(',');
+    query += ' CREATE ' + s.map(function(row) { return row.statement }).join(',');
+    query += ' RETURN ' + s.map(function(row) { return 'id(' + row.id + ') as ' + row.id }).join(',');
+    console.log(query);
     var endpoint = txn || 'transaction';
     var op = db.operation(endpoint, 'POST', {
       statements: [{ statement:query }]
