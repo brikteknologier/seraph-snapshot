@@ -1,3 +1,5 @@
+var seraph = require('seraph');
+
 var fetchdb = [
   'MATCH node',
   'OPTIONAL MATCH node-[rel]-x',
@@ -65,6 +67,11 @@ function JSONtoStatementList(data) {
   });
   return creates;
 };
+
+function restoreTransactional(db, data) {
+  var statements = JSONtoStatementList(data);
+
+}
 
 function JSONtoCypher(data) {
   return 'CREATE ' + JSONtoStatementList(data).map(function(s) { return s.statement }).join(',')

@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/brikteknologier/seraph-snapshot/issues"
   },
-  "homepage": "https://github.com/brikteknologier/seraph-snapshot"
+  "homepage": "https://github.com/brikteknologier/seraph-snapshot",
+  "dependencies": {
+    "seraph": "^0.11.3"
+  }
 }
