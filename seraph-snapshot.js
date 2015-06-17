@@ -106,8 +106,8 @@ function restoreTransactional(db, data, cb) {
       if (err) return cb(err);
       // see how enterprise.
       if (!txn) txn = transLoc;
-      var keys = result.result[0].keys;
-      var vals = result.result[0].data[0].row;
+      var keys = result.results[0].keys;
+      var vals = result.results[0].data[0].row;
       keys.forEach(function(key, i) {
         nodeMap[key] = vals[i];
       });
