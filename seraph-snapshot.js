@@ -113,6 +113,10 @@ function restoreTransactional(db, data) {
 
       cb();
     });
+  }, function(e) {
+    if (e) return cb(e);
+    var op = db.operation(txn + '/commit', 'POST', {});
+    db.call(op, cb);
   });
 }
 
