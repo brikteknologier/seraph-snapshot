@@ -90,7 +90,12 @@ return:
 CREATE (node0:`car` {make:"Citroen",model:"DS4",year:2011}),(node1:`person` {name:"Jon Packer",age:26}),node0-[rel2:`OWNS` {for:"3 years"}]->node1
 ```
 
-### snapshot.jsonToCypher(json)
+### snapshot.jsonToCypher(json, stepSize)
+
+* `json`: an object with data from the database, formatted in the way returned
+          by `snapshot.json`.
+* `stepSize`: optional - if set, return an array of CREATE queries with this many
+              create statements in it
 
 Converts an object represtation of a neo4j database to a cypher query that can
 be used to recreate it.
