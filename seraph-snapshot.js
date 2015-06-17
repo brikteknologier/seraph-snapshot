@@ -1,4 +1,5 @@
 var seraph = require('seraph');
+var async = require('async');
 
 var fetchdb = [
   'MATCH node',
@@ -70,7 +71,17 @@ function JSONtoStatementList(data) {
 
 function restoreTransactional(db, data) {
   var statements = JSONtoStatementList(data);
+  var stepSize = 15;
+  var nodeMap = {};
+  var groups = [];
+  
+  for (var i = 0; i < data.length; i += 15) {
+    groups.push(data.slice(i, i + 15));
+  }
 
+  async.forEachSeries(groups, function(s,cb) {
+
+  });
 }
 
 function JSONtoCypher(data) {
