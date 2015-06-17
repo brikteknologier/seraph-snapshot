@@ -25,7 +25,7 @@ function dbToJSON(db, cb) {
   });
 }
 
-function JSONtoCypher(data) {
+function JSONtoStatementList(data) {
   var keys = Object.keys(data);
   var nodes = keys.filter(function(key) {
     return data[key].type == 'node';
@@ -63,16 +63,12 @@ function JSONtoCypher(data) {
     var type = '`' + rel.data.type + '`';
     creates.push({statement: start + '-[' + name + ':' + type + ' ' + params + ']->' + finish,refs:[start,finish]}); 
   });
-  if (!statementSplitSize) {
-    return 'CREATE ' + creates.join(',');
-  } else {
-    var queries = [];
-    for (var start = 0; start < creates.length; start += statementSplitSize) {
-      queries.push('CREATE ' + creates.slice(start, start + statementSplitSize).join(','));
-    }
-    return queries;
-  }
+  return creates;
 };
+
+function JSONtoCypher(data) {
+  return 'CREATE ' + JSONtoStatementList(data).map(function(s) { return s.statement }).join(',')
+}
 
 module.exports = {
   json: dbToJSON,
