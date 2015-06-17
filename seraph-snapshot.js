@@ -102,9 +102,10 @@ function restoreTransactional(db, data, cb) {
     var op = db.operation(endpoint, 'POST', {
       statements: [{ statement:query }]
     });
-    db.call(op, function(err, result) {
+    db.call(op, function(err, result, transLoc) {
       if (err) return cb(err);
       // see how enterprise.
+      if (!txn) txn = transLoc;
       var keys = result.result[0].keys;
       var vals = result.result[0].data[0].row;
       keys.forEach(function(key, i) {
