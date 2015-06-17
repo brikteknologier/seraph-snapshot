@@ -25,7 +25,7 @@ function dbToJSON(db, cb) {
   });
 }
 
-function JSONtoCypher(data) {
+function JSONtoCypher(data, statementSplitSize) {
   var keys = Object.keys(data);
   var nodes = keys.filter(function(key) {
     return data[key].type == 'node';
@@ -63,7 +63,15 @@ function JSONtoCypher(data) {
     var type = '`' + rel.data.type + '`';
     creates.push(start + '-[' + name + ':' + type + ' ' + params + ']->' + finish); 
   });
-  return 'CREATE ' + creates.join(',');
+  if (!statementSplitSize) {
+    return 'CREATE ' + creates.join(',');
+  } else {
+    var queries = [];
+    for (var start = 0; start < creates.length; start += statementSplitSize) {
+      queries.push('CREATE ' + creates.slice(start, start + statementSplitSize).join(','));
+    }
+    return queries;
+  }
 };
 
 module.exports = {
