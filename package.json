@@ -1,6 +1,6 @@
 {
   "name": "seraph-snapshot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Take a snapshot of a neo4j database",
   "main": "seraph-snapshot.js",
   "scripts": {
