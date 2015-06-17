@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/brikteknologier/seraph-snapshot",
   "dependencies": {
+    "async": "^1.2.1",
     "seraph": "^0.11.3"
   }
 }
