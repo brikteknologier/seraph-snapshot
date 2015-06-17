@@ -96,7 +96,6 @@ function restoreTransactional(db, data, cb) {
     var query = start ? 'START ' + start : '';
     query += ' CREATE ' + s.map(function(row) { return row.statement }).join(',');
     query += ' RETURN ' + s.map(function(row) { return 'id(' + row.id + ') as ' + row.id }).join(',');
-    console.log(query);
     var endpoint = txn || 'transaction';
     var op = db.operation(endpoint, 'POST', {
       statements: [{ statement:query }]
@@ -116,7 +115,7 @@ function restoreTransactional(db, data, cb) {
     });
   }, function(e) {
     if (e) return cb(e);
-    var op = db.operation(txn + '/commit', 'POST', {});
+    var op = db.operation(txn + '/commit', 'POST', {statements:[]});
     db.call(op, cb);
   });
 }
