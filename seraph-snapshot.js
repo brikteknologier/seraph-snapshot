@@ -25,7 +25,7 @@ function dbToJSON(db, cb) {
   });
 }
 
-function JSONtoCypher(data, statementSplitSize) {
+function JSONtoCypher(data) {
   var keys = Object.keys(data);
   var nodes = keys.filter(function(key) {
     return data[key].type == 'node';
@@ -52,7 +52,7 @@ function JSONtoCypher(data, statementSplitSize) {
     var name = keymap[nodeKey] = createUniqueName('node');
     var params = createParamString(node.data);
     var labels = node.labels.map(function(l) { return ':`' + l + '`' }).join('');
-    creates.push('(' + name + labels + ' ' + params + ')');
+    creates.push({statement: '(' + name + labels + ' ' + params + ')', refs:[]});
   });
   rels.forEach(function(relKey) {
     var rel = data[relKey];
@@ -61,7 +61,7 @@ function JSONtoCypher(data, statementSplitSize) {
     var start = keymap["node_" + rel.data.start];
     var finish = keymap["node_" + rel.data.end];
     var type = '`' + rel.data.type + '`';
-    creates.push(start + '-[' + name + ':' + type + ' ' + params + ']->' + finish); 
+    creates.push({statement: start + '-[' + name + ':' + type + ' ' + params + ']->' + finish,refs:[start,finish]}); 
   });
   if (!statementSplitSize) {
     return 'CREATE ' + creates.join(',');
