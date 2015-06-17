@@ -74,13 +74,27 @@ function restoreTransactional(db, data) {
   var stepSize = 15;
   var nodeMap = {};
   var groups = [];
+  var txn;
   
   for (var i = 0; i < data.length; i += 15) {
     groups.push(data.slice(i, i + 15));
   }
 
   async.forEachSeries(groups, function(s,cb) {
-
+    var start = s.reduce(function(start, row) {
+      if (row.refs.length == 0) return start;
+      else return start.concat(row.refs.map(function(ref) {
+        return ref + '=node(' + nodeMap[ref] + ')';
+      }));
+    }, []).join(',');
+    var query = start ? 'START ' + start : '';
+    query += 'CREATE ' + s.map(function(row) { return row.statement }).join(',');
+    var endpoint = txn || 'transaction';
+    var op = db.operation(endpoint, 'POST', {
+      statements: [{ statement:query, resultDataContents: ['graph']}]
+    });
+    db.call(function(err, result) {
+    });
   });
 }
 
