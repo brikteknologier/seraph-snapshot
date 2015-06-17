@@ -127,6 +127,7 @@ function JSONtoCypher(data) {
 module.exports = {
   json: dbToJSON,
   jsonToCypher: JSONtoCypher,
+  restoreTransactional: restoreTransactional,
   cypher: function(db, cb) {
     dbToJSON(db, function(err, data) {
       if (err) return cb(err);
