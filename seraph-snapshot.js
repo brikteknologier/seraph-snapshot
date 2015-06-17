@@ -85,7 +85,7 @@ function restoreTransactional(db, data, cb) {
   var txn;
   
   for (var i = 0; i < data.length; i += 15) {
-    groups.push(data.slice(i, i + 15));
+    groups.push(statements.slice(i, i + 15));
   }
 
   async.forEachSeries(groups, function(s,cb) {
