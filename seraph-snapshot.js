@@ -55,7 +55,11 @@ function JSONtoStatementList(data) {
     var name = keymap[nodeKey] = createUniqueName('node');
     var params = createParamString(node.data);
     var labels = node.labels.map(function(l) { return ':`' + l + '`' }).join('');
-    creates.push({statement: '(' + name + labels + ' ' + params + ')', refs:[]});
+    creates.push({ 
+      statement: '(' + name + labels + ' ' + params + ')', 
+      refs:[],
+      id: name
+    });
   });
   rels.forEach(function(relKey) {
     var rel = data[relKey];
@@ -64,7 +68,11 @@ function JSONtoStatementList(data) {
     var start = keymap["node_" + rel.data.start];
     var finish = keymap["node_" + rel.data.end];
     var type = '`' + rel.data.type + '`';
-    creates.push({statement: start + '-[' + name + ':' + type + ' ' + params + ']->' + finish,refs:[start,finish]}); 
+    creates.push({
+      statement: start + '-[' + name + ':' + type + ' ' + params + ']->' + finish,
+      refs:[start,finish],
+      id: name
+    }); 
   });
   return creates;
 };
