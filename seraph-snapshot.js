@@ -104,7 +104,6 @@ function restoreTransactional(db, data, cb) {
       if (err) return cb(err);
       // see how enterprise.
       if (!txn) txn = require('url').parse(transLoc).path.replace(db.options.endpoint + '/', '');
-      console.log(result)
       var keys = result.results[0].columns;
       var vals = result.results[0].data[0].row;
       keys.forEach(function(key, i) {
