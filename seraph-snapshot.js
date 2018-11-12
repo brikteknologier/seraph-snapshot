@@ -3,8 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 
 var fetchdb = [
-  'MATCH node',
-  'OPTIONAL MATCH node-[rel]-x',
+  'MATCH (node)',
+  'OPTIONAL MATCH (node)-[rel]-(x)',
   'RETURN node, labels(node) as labels, collect(rel) as rels'
 ].join(' ');
 
