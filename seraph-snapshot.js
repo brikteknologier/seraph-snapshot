@@ -3,8 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 
 var fetchdb = [
-  'MATCH node',
-  'OPTIONAL MATCH node-[rel]-x',
+  'MATCH (node)',
+  'OPTIONAL MATCH (node)-[rel]-(x)',
   'RETURN node, labels(node) as labels, collect(rel) as rels'
 ].join(' ');
 
@@ -41,7 +41,7 @@ function JSONtoStatementList(data) {
   // can't use query params as we're exporting to a single string
   function createParamString(obj) {
     var kvs = Object.keys(obj).map(function(key) {
-      return key + ':' + JSON.stringify(obj[key]);
+      return '`' + key + '`' + ':' + JSON.stringify(obj[key]);
     }).join(',');
     return '{' + kvs + '}';
   }
@@ -70,7 +70,7 @@ function JSONtoStatementList(data) {
     var finish = keymap["node_" + rel.data.end];
     var type = '`' + rel.data.type + '`';
     creates.push({
-      statement: start + '-[' + name + ':' + type + ' ' + params + ']->' + finish,
+      statement: '(' + start + ')' + '-[' + name + ':' + type + ' ' + params + ']->' + '(' + finish + ')',
       refs:[start,finish],
       id: name
     }); 
